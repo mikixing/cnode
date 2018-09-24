@@ -41,7 +41,7 @@
 						<span class="content-title">
 							<span class="num-reply">{{item.reply_count}}</span><span class="num-symbol">/</span><span class="num-click">{{item.visit_count}}</span>
 							<span class="tab" :class="{noactive: !item.good && !item.top}">{{item | tab}}</span>
-							<a href="">{{item.title}}</a>
+							<router-link :to="{name: 'content', params: {id: item.id}}">{{item.title}}</router-link>
 						</span>
 					</div>
 				</div>

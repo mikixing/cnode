@@ -17,7 +17,7 @@ const resolve = (...args) => {
 
 
 const entry = {
-	main: path.join(__dirname, '../src/main.js')
+	main: resolve('src/main.js')
 }
 
 // const plugins = [
@@ -53,16 +53,13 @@ const entry = {
 // 		minChunks: Infinity
 // 	})
 // ]
-const plugins = []
-plugins.push(
+const plugins = [
+	new ExtractTextPlugin('style.css?[hash:7]'),
 	new HtmlWebpackPlugin({  // 相对于 out.path
-		template: path.join(__dirname, '../src/index.html'),
+		template: resolve('src/index.html'),
 		inject: true
 	})
-)
-plugins.push(
-	new ExtractTextPlugin(path.join(__dirname, '../dist/style.css?[hash:7]'))
-)
+]
 
 module.exports = {
 	entry,

@@ -9,8 +9,8 @@ export default new VueRouter({
 		name: 'index',
 		component: resolve => require(['../views/index.vue'], resolve)
 	}, {
-		path: '/user',
-		name: 'user',
-		component: resolve => require(['../views/user.vue'], resolve)
+		path: '/content/:id',
+		name: 'content',
+		component: resolve => require(['../views/content.vue'], resolve)
 	}]
 })
