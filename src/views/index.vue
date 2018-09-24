@@ -86,7 +86,7 @@
 			}
 		},
 		created () {
-			this.$http.get(' https://cnodejs.org/api/v1/topics', {page: 1, tab: 'ask', limit: 20}).then(res => {
+			this.api.getIndex().then(res => {
 				this.list = res.data.data
 				// this.$nextTick( _ => {
 				// 	utils.lazyLoad()	

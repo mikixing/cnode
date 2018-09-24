@@ -34,7 +34,7 @@ export const formatTime = time => {
 	}
 }
  export const tab = opt => {
- 	debugger
+ 	if (!opt) return
  	if (opt.top) {
  		return '置顶'
  	} else if (opt.good) {

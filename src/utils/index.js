@@ -1,3 +1,4 @@
+import ajax from './ajax'
 //lazyLoad
 var clock
 var count = 0
@@ -52,5 +53,6 @@ function offsetP (ele) {
 }
 
 export default {
-	lazyLoad
+	lazyLoad,
+	ajax
 }

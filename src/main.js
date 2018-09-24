@@ -5,10 +5,12 @@ import App from './app.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import './views/test/test.css'
+import * as api from './api.js'
 
 Vue.use(ElementUI);
 
 Vue.prototype.$http = axios
+Vue.prototype.api = api
 
 new Vue({
 	el: '#app',
