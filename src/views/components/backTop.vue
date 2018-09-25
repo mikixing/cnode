@@ -1,6 +1,5 @@
 <template>
 	<div>
-		 <router-view class="view"></router-view>
 		 <div v-show="show" class="backtop" @click="back"></div>
 	</div>
 </template>
@@ -21,12 +20,10 @@
 			}
 		},
 		mounted () {
-			var that = this
 			window.onscroll = function test (ev) {
 				if (document.documentElement.scrollTop > 100) {
-					that.show = true
-				} else {
-					that.show = false
+					this.show = true
+					console.log(this.show)
 				}
 			}
 		}
