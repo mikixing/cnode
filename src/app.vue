@@ -1,7 +1,7 @@
 <template>
 	<div>
 		 <router-view class="view"></router-view>
-		 <div v-show="show" class="backtop"></div>
+		 <div v-show="show" class="backtop" @click="back"></div>
 	</div>
 </template>
 
@@ -9,13 +9,21 @@
 	export default {
 		data () {
 			return {
-				show: false
+				show: true
+			}
+		},
+		methods: {
+			back () {
+				var dx = document.documentElement.scrollTop
+				move.ease([dx, 0], function (v) {
+					document.documentElement.scrollTop = v
+				})
 			}
 		},
 		mounted () {
-			window.onscroll = function (ev) {
+			window.onscroll = function test (ev) {
 				if (document.documentElement.scrollTop > 100) {
-					this.show = true
+					this.show = false
 					console.log(111)
 				}
 			}
@@ -28,7 +36,7 @@
 		width: 40px;
 	    height: 40px;
 	    position: fixed;
-	    bottom: 50px;
+	    bottom: 30px;
 	    border-radius: 5px;
 	    border: 1px solid #eee;
 	    right: 10px;

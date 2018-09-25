@@ -1,37 +1,32 @@
 <template>
 	<div>
-		<div class='navbar'>
-			<div class='navbar-left'>
-				<!-- <a class='logo' href="">
-					<img src="https://static2.cnodejs.org/public/images/cnodejs_light.svg" alt="">
-				</a> -->
-			</div>
-			<div class='navbar-right'>
-				<a href="">首页</a>
-				<a href="">新手入门</a>
-				<a href="">API</a>
-				<a href="">关于</a>
-				<a href="">注册</a>
-				<a href="">登录</a>
+		<div class="top">
+			<!-- <div class="wrap-top">
+				<a href="javascript: void(0)" @click="changeStatus(0)" :class="{active: flag[0]}">全部</a>
+				<a href="javascript: void(0)" @click="changeStatus(1)" :class="{active: flag[1]}">精华</a>
+				<a href="javascript: void(0)" @click="changeStatus(2)" :class="{active: flag[2]}">分享</a>
+				<a href="javascript: void(0)" @click="changeStatus(3)" :class="{active: flag[3]}">问答</a>
+				<a href="javascript: void(0)" @click="changeStatus(4)" :class="{active: flag[4]}">招聘</a>
+			</div> -->
+			<div class="wrap-top">
+				<el-tabs v-model="activeTab" type="border-card" @tab-click="changeStatus">
+				    <el-tab-pane label="全部" name="first">全部</el-tab-pane>
+				    <el-tab-pane label="精华" name="second">精华</el-tab-pane>
+				    <el-tab-pane label="分享" name="third">分享</el-tab-pane>
+				    <el-tab-pane label="问答" name="fourth">问答</el-tab-pane>
+				    <el-tab-pane label="招聘" name="fifth">招聘</el-tab-pane>
+				</el-tabs>
 			</div>
 		</div>
 		<div class='content'>
-			<div class='sidebar'>
+			<!-- <div class='sidebar'>
 				<div class="des">
 					<div class="des-top">CNode: Node.js专业中文社区</div>
 					<div class="des-mid">您可以<a href="">登录</a>或<a href="">注册</a>,也可以</div>
 					<div class="des-bot">通过 GitHub 登录</div>
 				</div>
-			</div>
+			</div> -->
 			<div class='main'>
-				<div class='main-top'>
-					<a href="javascript: void(0)" @click="changeStatus(0)" :class="{active: flag[0]}">全部</a>
-					<a href="javascript: void(0)" @click="changeStatus(1)" :class="{active: flag[1]}">精华</a>
-					<a href="javascript: void(0)" @click="changeStatus(2)" :class="{active: flag[2]}">分享</a>
-					<a href="javascript: void(0)" @click="changeStatus(3)" :class="{active: flag[3]}">问答</a>
-					<a href="javascript: void(0)" @click="changeStatus(4)" :class="{active: flag[4]}">招聘</a>
-					<a href="javascript: void(0)" @click="changeStatus(5)" :class="{active: flag[5]}">客户端测试</a>
-				</div>
 				<div class="main-content">
 					<div class="content-wrap" v-for="item in list">
 						<!-- <a class="portrait" :title=item.author.loginname>
@@ -49,10 +44,10 @@
 					</div>
 				</div>
 				<el-pagination
-				  background
-				  layout="prev, pager, next"
-				  :total="1000"
-				  @current-change='changePage'>
+				  	background
+				  	layout="prev, pager, next"
+				  	:total="1000"
+				  	@current-change='changePage'>
 				</el-pagination>
 			</div>
 		</div>
@@ -64,10 +59,10 @@
 	export default {
 		data () {
 			return {
-				flag: [true, false, false, false, false, false],
 				list: {},
 				total: 100,
-				topic: ''
+				topic: '',
+				activeTab: 'first'
 			}
 		},
 		filters: {
@@ -75,51 +70,39 @@
 			tab: tab
 		},
 		methods: {
-			manageStatus (status) {
-				var arr = new Array(this.flag.length)
-				arr.fill(false)
-				arr[status] = true
-				this.flag = arr
-			},
-			changeStatus (status) {
-				switch (status) {
+			changeStatus (opt) {
+				switch (+opt.index) {
 					case 0:
-						this.manageStatus(0)
 						this.topic = ''
 						this.api.getIndex().then(res => {
 							this.list = res.data.data
 						});
 						break;
 					case 1: 
-						this.manageStatus(1)
 						this.topic = 'good'
 						this.api.getIndex({tab: this.topic}).then(res => {
 							this.list = res.data.data
 						});
 						break;
 					case 2:
-						this.manageStatus(2)
 						this.topic = 'share'
 						this.api.getIndex({tab: this.topic}).then(res => {
 							this.list = res.data.data
 						});
 						break;
 					case 3:
-						this.manageStatus(3) 
 						this.topic = 'ask'
 						this.api.getIndex({tab: this.topic}).then(res => {
 							this.list = res.data.data
 						});
 						break;
 					case 4:
-						this.manageStatus(4)
 						this.topic = 'job'
 						this.api.getIndex({tab: this.topic}).then(res => {
 							this.list = res.data.data
 						});
 						break;
 					default: 
-						this.manageStatus(5);
 						this.topic = '';
 				}
 			},
@@ -141,80 +124,36 @@
 </script>
 
 <style>
-	.navbar {
-		background: #444;
-		height: 50px;
-		padding: 0 50px;
-	}
-	.logo {
-		width: 120px;
-		height: 34px;
-	}
-	.logo > img {
-		width: 100%;
-		height: 100%;
-	}
-	.navbar-left {
-		margin-right: 50px;
-	}
-	.navbar-right {
-		float: right;
-	}
-	.navbar-right > a {
-		margin: 10px;
-		color: #ccc;
-		text-decoration: none;
-		font-size: 13px;
-		line-height: 50px;
-	}
-	.content {
-		margin: 15px 50px;
-	}
-	.sidebar {
-		float: right;
-		width: 270px;
-		height: 200px;
-		padding: 0 10px;
-	}
-	.des {
-		background: #fff;
-		padding: 10px;
-		font-size: 14px;
-	}
-	.des-mid {
-		margin-top: 15px;
-	}
-	.des-mid > a {
-		color: #666;
-	}
-	.des-bot {
-		margin-top: 5px;
-		background: #5bc0de;
-		color: #fff;
-		padding: 5px;
-		width: 150px;
-		border-radius: 5px;
-	}
-	.main {
-		margin-right: 300px;
-		background: #fff;
-		border-radius: 5px;
-		padding-bottom: 10px;
-	}
-	.main-top {
-		padding: 10px;
+	.top {
 		background: #f6f6f6;
+		position: fixed;
+		width: 100%;
+		z-index: 10;
 	}
-	.main-top > a {
-		padding: 3px 5px;
-		color: #80bd01;
+	.wrap-top {
+		width: 80%;
+		margin: auto;
+	}
+	/*.wrap-top > a {
+		padding: 20px;
+		color: #333;
 		font-size: 14px;
 		text-decoration: none;
 		border-radius: 3px;
-	}
+	}*/
 	.active {
-		color: #fff !important;
-		background: #80bd01;
+		color: #80bd01 !important;
+		/*background: #80bd01;*/
+	}
+	.content {
+		width: 80%;
+		margin: auto;
+		padding-top: 100px;
+	}
+	.main {
+		background: #fff;
+		border-radius: 5px;
+		padding-bottom: 10px;
 	}
 	.noactive {
 		color: #999 !important;
