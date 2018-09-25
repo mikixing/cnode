@@ -6,7 +6,7 @@
 					<img src="https://static2.cnodejs.org/public/images/cnodejs_light.svg" alt="">
 				</a> -->
 			</div>
-			<div class='navbar-right miki'>
+			<div class='navbar-right'>
 				<a href="">首页</a>
 				<a href="">新手入门</a>
 				<a href="">API</a>
@@ -25,17 +25,20 @@
 			</div>
 			<div class='main'>
 				<div class='main-top'>
-					<a href="/#/user" @click="changeStatus(0)" :class="{active: flag0}">全部</a>
-					<a href="" @click="changeStatus(1)">精华</a>
-					<a href="" @click="changeStatus(2)">分享</a>
-					<a href="" @click="changeStatus(3)">问答</a>
-					<a href="" @click="changeStatus(4)">招聘</a>
-					<a href="" @click="changeStatus(5)">客户端测试</a>
+					<a href="javascript: void(0)" @click="changeStatus(0)" :class="{active: flag[0]}">全部</a>
+					<a href="javascript: void(0)" @click="changeStatus(1)" :class="{active: flag[1]}">精华</a>
+					<a href="javascript: void(0)" @click="changeStatus(2)" :class="{active: flag[2]}">分享</a>
+					<a href="javascript: void(0)" @click="changeStatus(3)" :class="{active: flag[3]}">问答</a>
+					<a href="javascript: void(0)" @click="changeStatus(4)" :class="{active: flag[4]}">招聘</a>
+					<a href="javascript: void(0)" @click="changeStatus(5)" :class="{active: flag[5]}">客户端测试</a>
 				</div>
 				<div class="main-content">
 					<div class="content-wrap" v-for="item in list">
-						<a class="portrait" :title=item.author.loginname>
+						<!-- <a class="portrait" :title=item.author.loginname>
 							<img :data-url=item.author.avatar_url  class="lazyload" alt="">
+						</a> -->
+						<a class="portrait" :title=item.author.loginname>
+							<img :src=item.author.avatar_url  alt="">
 						</a>
 						<span class="content-time">{{item.create_at | formatTime}}</span>
 						<span class="content-title">
@@ -48,7 +51,8 @@
 				<el-pagination
 				  background
 				  layout="prev, pager, next"
-				  :total="1000">
+				  :total="1000"
+				  @current-change='changePage'>
 				</el-pagination>
 			</div>
 		</div>
@@ -60,13 +64,10 @@
 	export default {
 		data () {
 			return {
-				flag0: true,
-				flag1: false,
-				flag2: false,
-				flag3: false,
-				flag4: false,
-				flag5: false,
-				list: {}
+				flag: [true, false, false, false, false, false],
+				list: {},
+				total: 100,
+				topic: ''
 			}
 		},
 		filters: {
@@ -74,15 +75,58 @@
 			tab: tab
 		},
 		methods: {
+			manageStatus (status) {
+				var arr = new Array(this.flag.length)
+				arr.fill(false)
+				arr[status] = true
+				this.flag = arr
+			},
 			changeStatus (status) {
 				switch (status) {
-					case 0: ;
-					case 1: ;
-					case 2: ;
-					case 3: ;
-					case 4: ;
-					default: ;
+					case 0:
+						this.manageStatus(0)
+						this.topic = ''
+						this.api.getIndex().then(res => {
+							this.list = res.data.data
+						});
+						break;
+					case 1: 
+						this.manageStatus(1)
+						this.topic = 'good'
+						this.api.getIndex({tab: this.topic}).then(res => {
+							this.list = res.data.data
+						});
+						break;
+					case 2:
+						this.manageStatus(2)
+						this.topic = 'share'
+						this.api.getIndex({tab: this.topic}).then(res => {
+							this.list = res.data.data
+						});
+						break;
+					case 3:
+						this.manageStatus(3) 
+						this.topic = 'ask'
+						this.api.getIndex({tab: this.topic}).then(res => {
+							this.list = res.data.data
+						});
+						break;
+					case 4:
+						this.manageStatus(4)
+						this.topic = 'job'
+						this.api.getIndex({tab: this.topic}).then(res => {
+							this.list = res.data.data
+						});
+						break;
+					default: 
+						this.manageStatus(5);
+						this.topic = '';
 				}
+			},
+			changePage(n) {
+				this.api.getIndex({page: n, tab: this.topic}).then(res => {
+					this.list = res.data.data
+				})
 			}
 		},
 		created () {
@@ -154,7 +198,8 @@
 	.main {
 		margin-right: 300px;
 		background: #fff;
-		border-radius: 10px;
+		border-radius: 5px;
+		padding-bottom: 10px;
 	}
 	.main-top {
 		padding: 10px;
@@ -177,6 +222,9 @@
 		border-radius: 3px;
 		padding: 1px 4px;
 		font-size: 12px;
+	}
+	.main-content {
+		padding-bottom: 10px;
 	}
 	.content-wrap {
 		border-bottom: 1px solid #f0f0f0;

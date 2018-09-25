@@ -14,6 +14,7 @@ export default {
 		})
 	},
 	get (url, params) {
+		// if (params.tab === 'share') debugger
 		return service({
 			url,
 			params,

@@ -43,5 +43,7 @@ export const formatTime = time => {
  		return '分享'
  	} else if (opt.tab === 'ask') {
  		return '问答'
+ 	} else if (opt.tab === 'job') {
+ 		return '招聘'
  	}
  }
