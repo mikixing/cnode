@@ -51,6 +51,8 @@
 				</el-pagination>
 			</div>
 		</div>
+		 <div v-loading.fullscreen.lock="fullscreenLoading">
+		 </div>
 	</div>
 </template>
 <script>
@@ -62,7 +64,8 @@
 				list: {},
 				total: 100,
 				topic: '',
-				activeTab: 'first'
+				activeTab: 'first', 
+				fullscreenLoading: true
 			}
 		},
 		filters: {
@@ -71,49 +74,60 @@
 		},
 		methods: {
 			changeStatus (opt) {
+				this.fullscreenLoading = true
 				switch (+opt.index) {
 					case 0:
 						this.topic = ''
 						this.api.getIndex().then(res => {
+							this.fullscreenLoading = false
 							this.list = res.data.data
 						});
 						break;
 					case 1: 
 						this.topic = 'good'
 						this.api.getIndex({tab: this.topic}).then(res => {
+							this.fullscreenLoading = false
 							this.list = res.data.data
 						});
 						break;
 					case 2:
 						this.topic = 'share'
 						this.api.getIndex({tab: this.topic}).then(res => {
+							this.fullscreenLoading = false
 							this.list = res.data.data
 						});
 						break;
 					case 3:
 						this.topic = 'ask'
 						this.api.getIndex({tab: this.topic}).then(res => {
+							this.fullscreenLoading = false
 							this.list = res.data.data
 						});
 						break;
 					case 4:
 						this.topic = 'job'
 						this.api.getIndex({tab: this.topic}).then(res => {
+							this.fullscreenLoading = false
 							this.list = res.data.data
 						});
 						break;
 					default: 
+						this.fullscreenLoading = false
 						this.topic = '';
 				}
 			},
 			changePage(n) {
+				this.fullscreenLoading = true
 				this.api.getIndex({page: n, tab: this.topic}).then(res => {
+					this.fullscreenLoading = false
 					this.list = res.data.data
 				})
 			}
 		},
 		created () {
+			this.fullscreenLoading = true
 			this.api.getIndex().then(res => {
+				this.fullscreenLoading = false
 				this.list = res.data.data
 				// this.$nextTick( _ => {
 				// 	utils.lazyLoad()	
