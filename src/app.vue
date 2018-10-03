@@ -43,6 +43,7 @@
 	    border: 1px solid #eee;
 	    right: 10px;
 	    box-shadow: 0 0 1px #999;
+	    cursor: pointer;
 	}
 	.backtop::after {
 		position: absolute;
