@@ -16,7 +16,8 @@
 						<span class="reply_content_title">{{item.author.loginname}}</span> <span>·</span><span class="reply_content_time">{{item.create_at | formatTime}}</span>
 						<!-- <span class="reply_content_icon iconfont icon-lajitong" ></span> -->
 						<span class="reply_content_icon iconfont icon-huifu" @click="replyTopic(item.id)"></span>
-						<span class="reply_content_icon iconfont icon-zan" ></span>
+						<span class="reply_content_icon reply_content_num">1</span>
+						<span class="reply_content_icon iconfont icon-zan" @click="replyUp(item.id)"></span>
 					</div>
 					<div class="reply_content_text" v-html="item.content"></div>
 				</div>
@@ -70,7 +71,7 @@
 		        	for (var i in opt) {
 		        		if (opt[i] === '' || opt[i] === undefined) delete opt[i]
 		        	}
-		          	this.api.createReply(...opt).then(res => {
+		          	this.api.createReply(opt).then(res => {
 		          		if (res.data.success === true) {
 			          		this.$message({
 				            	type: 'success',
@@ -89,6 +90,9 @@
 		            	message: '取消输入'
 		          	})      
 		        })
+		    },
+		    replyUp () {
+		    	this.api.doLike
 		    }
 		},
 		created () {

@@ -15,9 +15,10 @@ export function getContent (id) {
 }
 
 //新建评论
-export function createReply (content, topic_id, reply_id) {
-	reply_id = reply_id || ' '
-	var url = '/topic/' + topic_id + '/replies'
+export function createReply (opt) {
+	var content = opt.content || ''
+	var reply_id = opt.reply_id || ''
+	var url = '/topic/' + opt.topic_id + '/replies'
 	return utils.ajax.post(url, {content: content, accesstoken: 'fd68a2d1-e032-4909-9fc0-197f2d756871', reply_id: reply_id})
 }
 
