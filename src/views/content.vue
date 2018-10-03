@@ -14,13 +14,19 @@
 				<div class="reply_content">
 					<div class="reply_content_des">
 						<span class="reply_content_title">{{item.author.loginname}}</span> <span>·</span><span class="reply_content_time">{{item.create_at | formatTime}}</span>
+						<!-- <span class="reply_content_icon iconfont icon-lajitong" ></span> -->
+						<span class="reply_content_icon iconfont icon-huifu" @click="replyTopic(item.id)"></span>
+						<span class="reply_content_icon iconfont icon-zan" ></span>
 					</div>
-					<div class="reply_content_text" v-html=item.content></div>
+					<div class="reply_content_text" v-html="item.content"></div>
 				</div>
 			</div>
+			<div class="reply_btn">
+				<el-button type="text" @click="replyTopic">回复此贴</el-button>
+			</div>
+			<!-- <el-button type="text" @click="replyTopic">回复此贴</el-button> -->
 		</div>
-		<div v-loading.fullscreen.lock="fullscreenLoading">
-		 </div>
+		<div v-loading.fullscreen.lock="fullscreenLoading"></div>
 	</div>
 </template>
 
@@ -30,7 +36,8 @@
 	import {getContent} from '../utils'
 	import hljs from 'highlight.js'
 	import javascript from 'highlight.js/lib/languages/javascript'
-	import 'highlight.js/styles/default.css';
+	import 'highlight.js/styles/default.css'
+	import './style/content.less'
 
 	hljs.registerLanguage('javascript', javascript)
 	export default {
@@ -47,6 +54,41 @@
 		filters: {
 			formatTime: formatTime,
 			tab: tab
+		},
+		methods: {
+			replyTopic (id) {
+		        this.$prompt('请输入评论信息', '提示', {
+		          	confirmButtonText: '确定',
+		          	cancelButtonText: '取消'
+		        }).then(({ value }) => {
+		        	var opt = {
+		        		content: value,
+		        		topic_id: this.$route.params.id,
+		        		id: id
+		        	}
+		        	for (var i in opt) {
+		        		if (opt[i] === '' || opt[i] === undefined) delete opt[i]
+		        	}
+		          	this.api.createReply(...opt).then(res => {
+		          		if (res.data.success === true) {
+			          		this.$message({
+				            	type: 'success',
+				            	message: '评论成功'
+				          	})
+		          		} else {
+		          			this.$message({
+				            	type: 'warning',
+				            	message: '接口错误'
+				          	})
+		          		}
+		          	})
+		        }).catch(() => {
+		          	this.$message({
+		            	type: 'info',
+		            	message: '取消输入'
+		          	})      
+		        })
+		    }
 		},
 		created () {
 			var id = this.$route.params.id
@@ -78,89 +120,3 @@
 		}
 	}
 </script>
-
-<style>
-	.wrap {
-		width: 80%;
-		margin: auto;
-		overflow: hidden;
-	}
-	.title {
-		text-align: center;
-		padding: 20px 0 10px 0;
-		background: #fff;
-	}
-	#content {
-		margin: auto;
-		background: #fff;
-	}
-	.markdown-text {
-		padding: 10px 20px;
-	}
-	blockquote {
-		border-left: 5px solid #eee;
-		padding: 0 20px;
-		margin: 0;
-	}
-	.des {
-		text-align: center;
-		color: #888;
-		font-size: 12px;
-		background: #fff;
-	}
-	.des > span {
-		font-size: 12px;
-		position: relative;
-		margin-right: 13px;
-	}
-	.des > span::before{
-		position: absolute;
-		top: 7px;
-		left: -5px;
-		margin-right: 10px;
-		content: '';
-		width: 3px;
-		height: 3px;
-		background: #888;
-		border-radius: 100%;
-	}
-	img {
-		width: 100%;
-	}
-	.reply_area {
-		background: #fff;
-		margin-top: 10px;
-	}
-	.reply_wrap {
-		padding:15px 0 ;
-		border-bottom: 1px solid #eee;
-		padding: 10px;
-	}
-	.reply_count {
-		background: #f6f6f6;
-		padding: 10px;
-	}
-	.reply_wrap:nth-last-child(1){
-		border-bottom: 0;
-	}
-	.reply_portrait {
-		width: 30px;
-		height: 30px;
-		float: left;
-	}
-	.reply_portrait > img {
-		width: 100%;
-		height: 100%;
-	}
-	.reply_content {
-		margin-left: 40px;
-	}
-	.reply_content_des {
-		line-height: 20px;
-		font-size: 12px;
-		color: #08c;
-	}
-	.reply_content_title {
-		color: #666;
-	}
-</style>
