@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div v-loading.fullscreen.lock="fullscreenLoading">
-		 </div>
+		</div>
 	</div>
 </template>
 
