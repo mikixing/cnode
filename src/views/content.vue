@@ -5,7 +5,7 @@
 			<span>发布于{{des.date | formatTime}}</span> <span>作者{{des.name}}</span> <span>浏览{{des.visit_count}}次</span> <span>来自{{des.tab | tab}}</span>
 		</div>
 		<div id="content" v-html="content"></div>
-		<div class="reply_area">
+		<div class="reply_area" v-if="true">
 			<div class="reply_count">{{count}}个回复</div>
 			<div class="reply_wrap" v-for="item in reply">
 				<a class="reply_portrait">
@@ -16,8 +16,8 @@
 						<span class="reply_content_title">{{item.author.loginname}}</span> <span>·</span><span class="reply_content_time">{{item.create_at | formatTime}}</span>
 						<!-- <span class="reply_content_icon iconfont icon-lajitong" ></span> -->
 						<span class="reply_content_icon iconfont icon-huifu" @click="replyTopic(item.id)"></span>
-						<span class="reply_content_icon reply_content_num">1</span>
-						<span class="reply_content_icon iconfont icon-zan" @click="replyUp(item.id)"></span>
+						<!-- <span class="reply_content_icon reply_content_num">1</span> -->
+						<span class="reply_content_icon iconfont icon-zan" @click="replyUp(item)" :class="{iconactive: item.is_uped}"></span>
 					</div>
 					<div class="reply_content_text" v-html="item.content"></div>
 				</div>
@@ -91,8 +91,15 @@
 		          	})      
 		        })
 		    },
-		    replyUp () {
-		    	this.api.doLike
+		    replyUp (item) {
+		    	let {id} = item;
+		    	this.api.doLike(id).then(res => {
+		    		if (res.data.action === 'up') {
+		    			item.is_uped = 1
+		    		} else {
+		    			item.is_uped = 0
+		    		}
+		    	})
 		    }
 		},
 		created () {
