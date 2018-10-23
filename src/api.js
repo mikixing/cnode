@@ -19,11 +19,12 @@ export function createReply (opt) {
 	var content = opt.content || ''
 	var reply_id = opt.reply_id || ''
 	var url = '/topic/' + opt.topic_id + '/replies'
-	return utils.ajax.post(url, {content: content, accesstoken: 'fd68a2d1-e032-4909-9fc0-197f2d756871', reply_id: reply_id})
+	var accesstoken = opt.accesstoken
+	return utils.ajax.post(url, {content: content, accesstoken: accesstoken, reply_id: reply_id})
 }
 
 //为评论点赞
-export function doLike (reply_id) {
+export function doLike (reply_id, accesstoken) {
 	var url = '/reply/' + reply_id + '/ups'
-	return utils.ajax.post(url, {accesstoken: 'fd68a2d1-e032-4909-9fc0-197f2d756871'})
+	return utils.ajax.post(url, {accesstoken: accesstoken})
 }

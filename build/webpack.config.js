@@ -19,40 +19,6 @@ const resolve = (...args) => {
 const entry = {
 	main: resolve('src/main.js')
 }
-
-// const plugins = [
-// 	new CopyWebpackPlugin([{
-// 		from: 'img/**/*',
-// 		context: 'src'
-// 	}, {
-// 		from: 'js/lib/**/*',
-// 		context: 'src'
-// 	}, {
-// 		from: 'js/plugins/**/*',
-// 		context: 'src'
-// 	}, {
-// 		from: 'static/**/*',
-// 		context: 'src'
-// 	}]),
-// 	new webpack.DefinePlugin({
-// 		'process.env': stringify(config.env)
-// 	}),
-// 	new webpack.ProvidePlugin({
-// 		_: 'lodash'
-// 	}),
-// 	new ExtractTextPlugin({
-// 		filename: 'css/style.css?[hash:7]',
-// 		allChunks: true
-// 	}),
-// 	new webpack.ProvidePlugin({
-// 		util: resolve('src/js/util/index.js')
-// 	}),
-// 	new webpack.optimize.CommonsChunkPlugin({
-// 		name: 'common',
-// 		filename: 'js/common.js?[hash:7]',
-// 		minChunks: Infinity
-// 	})
-// ]
 const plugins = [
 	new ExtractTextPlugin('style.css?[hash:7]'),
 	new HtmlWebpackPlugin({  // 相对于 out.path
